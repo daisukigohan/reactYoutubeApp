@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+// 以下の1行を修正する
+import styled, { css } from 'styled-components';　// { css } を追加する
 import { useHistory } from 'react-router-dom';
 import Image from '~/components/atoms/Image';
+import FavoriteButton from '~/components/molecules/FavoriteButton';
 import Typography from '~/components/atoms/Typography';
 
 const Root = styled.div`
@@ -45,6 +47,13 @@ const ViewCount = styled(Typography)`
   margin-top: 5px;
 `;
 
+// 追加する
+const StyledFavoriteButton = styled(FavoriteButton)`
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+`;
+
 const VideosListItemPresenter = ({
   className,
   onClick,
@@ -52,6 +61,8 @@ const VideosListItemPresenter = ({
   title,
   description,
   viewCount,
+  withFavoriteButton, // 追加する
+  videoId, // 追加する
 }) => (
   <Root className={className} onClick={onClick}>
     <Thumbnail>
@@ -64,6 +75,10 @@ const VideosListItemPresenter = ({
         {viewCount}
         回視聴
       </ViewCount>
+            {/* 追加する */}
+            {withFavoriteButton && (
+        <StyledFavoriteButton videoId={videoId} />
+      )}
     </InfoWrapper>
   </Root>
 );
@@ -75,11 +90,15 @@ VideosListItemPresenter.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   viewCount: PropTypes.string.isRequired,
+  withFavoriteButton: PropTypes.bool, //追加する
+  videoId: PropTypes.string, //追加する
 };
 
 VideosListItemPresenter.defaultProps = {
   className: '',
   onClick: null,
+  withFavoriteButton: false, //追加する
+  videoId: '', //追加する
 };
 
 const VideosListItemContainer = ({
@@ -99,6 +118,7 @@ const VideosListItemContainer = ({
       viewCount,
     },
   },
+  withFavoriteButton, // 追加する
   presenter,
 }) => {
   // ページ遷移をさせるため、useHistoryを使ってhistoryオブジェクトを取得
@@ -113,6 +133,8 @@ const VideosListItemContainer = ({
     thumbnailUrl,
     description,
     viewCount,
+    withFavoriteButton, // 追加する
+    videoId: id, // 追加する
   });
 };
 
@@ -133,10 +155,12 @@ VideosListItemContainer.propTypes = {
       viewCount: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  withFavoriteButton: PropTypes.bool, // 追加する
 };
 
 VideosListItemContainer.defaultProps = {
   className: '',
+  withFavoriteButton: false, // 追加する
 };
 
 export default (props) => (

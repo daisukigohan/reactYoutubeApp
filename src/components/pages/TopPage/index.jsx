@@ -17,11 +17,11 @@ export const TopPagePresenter = ({
   loading,
 }) => (
   <VideosListTemplate
-    headerContents={<Header />}
+    headerContents={<Header/>}
     searchFormContents={(
       <SearchForm onSubmit={search} defaultValue={defaultKeyword} />
     )}
-    videosListContents={<VideosList videos={videos} loading={loading} />}
+    videosListContents={<VideosList videos={videos} loading={loading} withFavoriteButton />}
     onScrollEnd={searchNext}
   />
 );
